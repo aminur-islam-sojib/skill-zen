@@ -1,9 +1,11 @@
+import Hero2 from "@/components/Hero/HeroSection";
+
  
 
 export default function Home() {
   return (
      <div>
-      <main><h1>Hello Bangladesh</h1></main>
+     <Hero2/>
      </div>
   );
 }

@@ -4,12 +4,14 @@ import Link from "next/link";
  
 import { motion, Variants, Transition } from "framer-motion";
 import { Home, User, GraduationCap, LayoutDashboardIcon, Mail, Menu, X } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname  } from "next/navigation";
 import ShimmerButton from "../Button/ShimmerButton";
 import ThemeToggle from "../ThemeToggle";
 import { useAuth } from "@/hooks/AuthProvider";
 import ShimmerAvatarButton from "./ShimmerAvatarButton";
 import UserDropdown from "./UserDropdown";
+ 
+import NavProfile from "../Profile/NavProfile";
 
 // ----------------- Types -----------------
 interface MenuItem {
@@ -90,6 +92,7 @@ export default function ClientNavbar(): React.JSX.Element {
   const [open, setOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const closeTimeoutRef = useRef<number | NodeJS.Timeout | null>(null);
+ 
 
   const toggleUserDropdown = useCallback(() => {
     setIsUserDropdownOpen((prev) => !prev);
@@ -115,7 +118,6 @@ export default function ClientNavbar(): React.JSX.Element {
     if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
     closeTimeoutRef.current = window.setTimeout(() => setIsUserDropdownOpen(false), 180);
   }, []);
-
   // ----------------- Render Menu Items -----------------
   const renderMenuItem = (item: MenuItem) => {
     const isActive = pathname === item.href;
@@ -163,6 +165,7 @@ export default function ClientNavbar(): React.JSX.Element {
       </motion.li>
     );
   };
+  
 
   return (
     <div className="sticky top-0 z-50 my-3">
@@ -233,29 +236,9 @@ export default function ClientNavbar(): React.JSX.Element {
             {menuItems.map(renderMenuItem)}
             <div className="flex flex-col gap-3 mt-2">
               {user ? (
-                <div
-                  className="relative"
-                  onMouseEnter={openUserDropdown}
-                  onMouseLeave={closeUserDropdownDelayed}
-                  onFocus={openUserDropdown}
-                  onBlur={closeUserDropdownDelayed}
-                >
-                  <ShimmerAvatarButton
-                    onClick={toggleUserDropdown}
-                    onFocus={openUserDropdown}
-                    onBlur={closeUserDropdownDelayed}
-                    onMouseEnter={openUserDropdown}
-                    onMouseLeave={closeUserDropdownDelayed}
-                  />
-                  <UserDropdown
-                    isOpen={isUserDropdownOpen}
-                    onClose={closeUserDropdown}
-                    onMouseEnter={openUserDropdown}
-                    onMouseLeave={closeUserDropdownDelayed}
-                    onFocus={openUserDropdown}
-                    onBlur={closeUserDropdownDelayed}
-                  />
-                </div>
+                 <div className="px-4 py-3">
+                       <NavProfile/>
+                     </div>
               ) : (
                 <>
                   <ShimmerButton text="Log In" />

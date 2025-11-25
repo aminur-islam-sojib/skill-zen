@@ -4,12 +4,23 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
   images: {
-    // Allow Google user photos (and similar domains) for Next Image
-    domains: ["lh3.googleusercontent.com"],
+    // Prefer remotePatterns for more flexible and secure config
     remotePatterns: [
       {
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "*.googleusercontent.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "i.ibb.co",
         port: "",
         pathname: "/**",
       },
