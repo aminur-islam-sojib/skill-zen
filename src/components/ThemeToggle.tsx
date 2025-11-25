@@ -4,19 +4,32 @@ import React, { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<"light" | "dark" | null>(() => {
-    try {
-      const stored = typeof window !== "undefined" ? localStorage.getItem("theme") : null;
-      if (stored === "dark" || stored === "light") return stored as "dark" | "light";
-      const prefersDark = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-      return prefersDark ? "dark" : "light";
-    } catch {
-      return "light";
-    }
-  });
+  // To avoid hydration mismatch, start with `null` and set the theme on the client after mount
+  const [theme, setTheme] = useState<"light" | "dark" | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (!theme) return;
+    // initialize theme once on client mount
+    const init = () => {
+      try {
+        const stored = localStorage.getItem("theme");
+        if (stored === "dark" || stored === "light") {
+          setTheme(stored as "dark" | "light");
+        } else {
+          const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+          setTheme(prefersDark ? "dark" : "light");
+        }
+      } catch {
+        setTheme("light");
+      }
+      setMounted(true); // Set mounted to true after initializing theme
+    };
+    if (typeof window !== "undefined") init();
+  }, []);
+
+  useEffect(() => {
+    // don't run until mounted and theme is set
+    if (!mounted || theme === null) return;
     const root = document.documentElement;
     if (theme === "dark") {
       root.classList.add("dark");
@@ -28,7 +41,7 @@ export default function ThemeToggle() {
     } catch {
       // ignore
     }
-  }, [theme]);
+  }, [theme, mounted]);
 
   function toggleTheme() {
     setTheme((t) => (t === "dark" ? "light" : "dark"));
@@ -56,10 +69,17 @@ export default function ThemeToggle() {
       }
     }
   `;
+  if (!mounted) {
+    // Render a small neutral placeholder to avoid SSR/client mismatches
+    return (
+      <div className="inline-flex items-center justify-center rounded-full p-2" aria-hidden>
+        <div className="h-4 w-4 rounded-full bg-gray-300 dark:bg-gray-700" />
+      </div>
+    );
+  }
+
   return (
- <>
- 
- 
+    <>
     <div className="flex items-center justify-center font-sans cursor-pointer">
       <style>{customCss}</style>
       <button  aria-label="Toggle theme"

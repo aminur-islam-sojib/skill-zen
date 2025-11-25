@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
  
 const firebaseConfig = {
@@ -21,5 +21,6 @@ if (
 ) {
   console.warn("Firebase config may be incomplete. Ensure your NEXT_PUBLIC_* env vars are set.");
 }
-const app = initializeApp(firebaseConfig);
+// Initialize Firebase (avoid re-initializing if app is already initialized)
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 export const auth = getAuth(app)

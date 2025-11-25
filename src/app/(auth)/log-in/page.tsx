@@ -82,10 +82,12 @@ const Login2: React.FC = () => {
             setErrorMsg('Please provide both email and password');
             return;
         }
+        console.log('email:', email, 'hasPassword:', !!pass);
 
         setIsLoading(true);
         try {
                 const res = await login(email, pass);
+                console.log('login response', res);
             if (res.error) {
                 setErrorMsg(res.error);
                 console.error('Auth error:', res.error);

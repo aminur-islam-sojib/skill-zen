@@ -71,6 +71,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setLoading(true);
       console.log('login called with', email);
       const result = await signInWithEmailAndPassword(auth, email, password);
+      console.log('signInWithEmailAndPassword result', result);
       return { user: result.user, error: null };
     } catch (error: any) {
       console.error("Login error:", error);
