@@ -12,5 +12,14 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
+// Basic validation for missing environment variables to help debugging
+if (
+  !firebaseConfig.apiKey ||
+  !firebaseConfig.authDomain ||
+  !firebaseConfig.projectId ||
+  !firebaseConfig.appId
+) {
+  console.warn("Firebase config may be incomplete. Ensure your NEXT_PUBLIC_* env vars are set.");
+}
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app)
