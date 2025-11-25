@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signup = async (email: string, password: string): Promise<AuthResult> => {
     try {
       setLoading(true);
-      console.log('signup called with', email);
+      if (process.env.NODE_ENV === 'development') console.debug('signup called with', email);
       const result = await createUserWithEmailAndPassword(auth, email, password);
       return { user: result.user, error: null };
     } catch (error: any) {
@@ -69,9 +69,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (email: string, password: string): Promise<AuthResult> => {
     try {
       setLoading(true);
-      console.log('login called with', email);
+      if (process.env.NODE_ENV === 'development') console.debug('login called with', email);
       const result = await signInWithEmailAndPassword(auth, email, password);
-      console.log('signInWithEmailAndPassword result', result);
+      if (process.env.NODE_ENV === 'development') console.debug('signInWithEmailAndPassword result', result);
       return { user: result.user, error: null };
     } catch (error: any) {
       console.error("Login error:", error);
@@ -93,7 +93,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // Google Login
   const googleLogin = async (): Promise<AuthResult> => {
     try {
-      console.log('googleLogin called');
+      if (process.env.NODE_ENV === 'development') console.debug('googleLogin called');
       const googleProvider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, googleProvider);
       return { user: result.user, error: null };
