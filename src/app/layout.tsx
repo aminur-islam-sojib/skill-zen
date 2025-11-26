@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Navbar />
           {children}
         </Providers>
-         <Toaster />
+         <Toaster  position="top-center" richColors  />
       </body>
     </html>
   );
