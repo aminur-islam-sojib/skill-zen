@@ -1,25 +1,35 @@
+import Link from "next/link";
 import ShimmerButton2 from "../Button/ShimmerButton2";
-
 
 const Hero: React.FC = () => (
   <section className="relative z-10 text-center py-16 sm:py-24 px-4">
     <div className="max-w-4xl mx-auto">
-      <span className="inline-block px-4 py-1.5 text-xs font-semibold tracking-wider text-orange-600 dark:text-orange-400 uppercase bg-orange-100 dark:bg-orange-900/30 rounded-full">
+      <span className="inline-block px-4 py-1.5 text-xs font-semibold tracking-wider text-transparent bg-clip-text bg-linear-to-r from-cyan-500 to-cyan-600 dark:from-cyan-400 dark:to-cyan-500 uppercase bg-orange-100 dark:bg-orange-900/30 rounded-full">
         Qupe Finance
       </span>
-      <h1 className="mt-6 text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-gray-900 dark:text-white leading-tight">
-        Master New Skills. Build Your  
-        <span className="text-orange-500"> Future.</span>
-      </h1>
-      <p className="mt-6 max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-300">
-        Learn fast with curated mini-courses designed for real-world growth.
-      </p>
+
+      <div className="max-w-6xl mx-auto relative z-10 text-center">
+        <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-foreground mb-6">
+          Master New Skills. Build
+          <span className="text-transparent bg-clip-text bg-linear-to-r from-cyan-500 to-cyan-600 dark:from-cyan-400 dark:to-cyan-500">
+            {" "}
+            Your Future
+          </span>
+        </h1>
+        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+          Have a question or need assistance? We&apos;re here to help! Reach out
+          to our team and we&apos;ll get back to you as soon as possible.
+        </p>
+      </div>
+
       <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-        <ShimmerButton2 text="Get started - for free"/>
-       
-       <ShimmerButton2 text="Discover Qupe" />
-        
-        
+        <Link href={"/courses"}>
+          <ShimmerButton2 text="Get started - for free" />
+        </Link>
+
+        <Link href={"/courses"}>
+          <ShimmerButton2 text="Browse Courses" />
+        </Link>
       </div>
     </div>
   </section>
@@ -34,7 +44,7 @@ export default function Hero2() {
       <div className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 pointer-events-none">
         <div className="w-160 h-160 bg-linear-to-bl from-orange-200 dark:from-orange-800/30 to-transparent opacity-20 dark:opacity-10 rounded-full blur-3xl" />
       </div>
-       
+
       <main>
         <Hero />
       </main>

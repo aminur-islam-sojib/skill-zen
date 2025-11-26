@@ -76,7 +76,7 @@ reset()
   return (
    <ProtectedRoute>
      <div className="w-11/12 mx-auto flex items-center justify-center p-4">
-      <div className="w-full mx-auto [background:linear-gradient(45deg,#080b11,theme(colors.slate.800)_50%,#172033)_padding-box,conic-gradient(from_var(--border-angle),theme(colors.slate.600/.48)_80%,theme(colors.teal.500)_86%,theme(colors.cyan.300)_90%,theme(colors.teal.500)_94%,theme(colors.slate.600/.48))_border-box] rounded-2xl border border-transparent animate-border">
+      <div className="w-full mx-auto [background:linear-gradient(45deg,#080b11,--theme(--color-slate-800)_50%,#172033)_padding-box,conic-gradient(from_var(--border-angle),--theme(--color-slate-600/.48)_80%,--theme(--color-teal-500)_86%,--theme(--color-cyan-300)_90%,--theme(--color-teal-500)_94%,--theme(--color-slate-600/.48))_border-box] rounded-2xl border border-transparent animate-border">
         <div className="relative text-center z-10 px-8 py-12 rounded-2xl w-full bg-white dark:bg-black h-full mx-auto">
           {/* HEADER */}
           <h1 className="text-2xl font-bold tracking-tight text-black dark:text-white">

@@ -8,6 +8,7 @@ import { FaFileAlt, FaRegUser } from 'react-icons/fa';
 import { updateProfile } from 'firebase/auth';
 import { useLoader } from '@/hooks/LoaderContext';
 import { useAxiosSecure } from '@/lib/useAxiosSecure';
+import { toast } from 'sonner';
 // Use regular <img> for local blob previews to avoid next/image width/height requirement
 
 // --- Icons ---
@@ -124,7 +125,9 @@ const Login2: React.FC = () => {
         console.error('Google login error:', res.error);
       } else {
         if (process.env.NODE_ENV === 'development') console.debug('Google login success', res.user);
+        toast.success("User Registration Successful")
         router.push('/');
+
       }
     } catch (error) {
       if (process.env.NODE_ENV === 'development') console.debug(error);
@@ -187,6 +190,7 @@ const Login2: React.FC = () => {
         console.error('Auth error:', res.error);
       } else if (res.user) {
         // --- Update Firebase profile ---
+        toast.success("User Registration Successful")
         try {
           await updateProfile(res.user, { displayName: name, photoURL: profileImageUrl || undefined });
         } catch (err) {

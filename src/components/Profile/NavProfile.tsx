@@ -51,7 +51,7 @@ const NavProfile = () => {
               className="w-full h-full object-cover"
             />
           ) : (
-            <User className="h-6 w-6 text-white" />
+            <User className="h-10 w-10 text-white" />
           )}
         </div>
         {user && (
