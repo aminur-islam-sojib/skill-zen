@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { FcGoogle } from 'react-icons/fc';
 import { FaFileAlt, FaRegUser } from 'react-icons/fa';
 import { updateProfile } from 'firebase/auth';
+import { useLoader } from '@/hooks/LoaderContext';
 import { useAxiosSecure } from '@/lib/useAxiosSecure';
 // Use regular <img> for local blob previews to avoid next/image width/height requirement
 
@@ -55,6 +56,7 @@ const Login2: React.FC = () => {
   const router = useRouter();
   const { googleLogin, signup, user } = useAuth();
   const instanceSecure = useAxiosSecure();
+  const { show, hide } = useLoader();
 
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -83,6 +85,7 @@ const Login2: React.FC = () => {
         return null;
       }
       setUploadingImage(true);
+      show();
       const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
         method: "POST",
         body: formData,
@@ -106,6 +109,7 @@ const Login2: React.FC = () => {
       return null;
     } finally {
       setUploadingImage(false);
+      hide();
     }
   };
 

@@ -17,7 +17,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* Only works in client, ok if Navbar/Providers are client components */}
         <Providers>
           <Navbar />
           {children}

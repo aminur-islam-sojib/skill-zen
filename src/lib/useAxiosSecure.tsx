@@ -3,24 +3,44 @@
 import { useEffect } from "react";
 import api from "./axios";
 import { auth } from "./firebase.init";
-import { onAuthStateChanged, getIdToken } from "firebase/auth";
+import { getIdToken } from "firebase/auth";
+import { useLoader } from "@/hooks/LoaderContext";
 
 export function useAxiosSecure() {
+  const { show, hide } = useLoader();
   useEffect(() => {
-    // Listen for auth changes
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      api.interceptors.request.use(async (config) => {
-        if (user) {
-          // Firebase auto-refreshes token internally
+    // Add a request interceptor and response interceptor once
+    const reqId = api.interceptors.request.use(async (config) => {
+      try { show(); } catch {}
+      const user = auth.currentUser;
+      if (user) {
+        try {
           const token = await getIdToken(user, true);
+          config.headers = config.headers ?? {};
           config.headers.Authorization = `Bearer ${token}`;
+        } catch {
+          // ignore token errors, proceed without auth header
         }
-        return config;
-      });
+      }
+      return config;
+    }, (err) => {
+      try { hide(); } catch {}
+      return Promise.reject(err);
     });
 
-    return () => unsubscribe && unsubscribe();
-  }, []);
+    const resId = api.interceptors.response.use((res) => {
+      try { hide(); } catch {}
+      return res;
+    }, (err) => {
+      try { hide(); } catch {}
+      return Promise.reject(err);
+    });
+
+    return () => {
+      api.interceptors.request.eject(reqId);
+      api.interceptors.response.eject(resId);
+    };
+  }, [show, hide]);
 
   return api;
 }

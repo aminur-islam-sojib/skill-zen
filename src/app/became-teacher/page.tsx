@@ -23,7 +23,7 @@ export default function TeacherFormCard() {
   const { user } = useAuth();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log("SUBMITTED DATA:", data);
+  
 
     // Access uploaded file (optional)
     const file = data.file?.[0];

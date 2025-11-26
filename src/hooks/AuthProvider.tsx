@@ -68,7 +68,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             `/user/role?email=${firebaseUser.email}`
           );
           const data = res.data;
-          console.log(data);
+       
           if (data.role === "teacher") {
             setUserRole("teacher");
             setTeacherInfo(data.teacher);

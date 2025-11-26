@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useLoader } from "@/hooks/LoaderContext";
 import { useAxiosSecure } from "@/lib/useAxiosSecure";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 type CourseInputs = {
   title: string;
@@ -25,9 +27,10 @@ type CourseInputs = {
 };
 
 export default function CreateCourseForm() {
-  const { register, handleSubmit } = useForm<CourseInputs>();
+  const { register, handleSubmit, reset } = useForm<CourseInputs>();
 
   const instanceSecure = useAxiosSecure();
+  const { show, hide } = useLoader();
 //   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 //   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 //   const [uploadingImage, setUploadingImage] = useState(false);
@@ -53,23 +56,26 @@ const [loading, setLoading] = useState<boolean>(false)
     };
 
     try {
+        show();
         setLoading(true)
-      const res = await instanceSecure.post("/create-course", courseDetail);
-      console.log(res)
+     await instanceSecure.post("/create-course", courseDetail);
+   
       toast.success("Course created successfully!");
     } catch (error) {
       console.log(error);
       toast.error("Failed to create course");
     }finally {
         setLoading(false)
+        hide();
     }
 
-
+reset()
   
   };
 
   return (
-    <div className="w-11/12 mx-auto flex items-center justify-center p-4">
+   <ProtectedRoute>
+     <div className="w-11/12 mx-auto flex items-center justify-center p-4">
       <div className="w-full mx-auto [background:linear-gradient(45deg,#080b11,theme(colors.slate.800)_50%,#172033)_padding-box,conic-gradient(from_var(--border-angle),theme(colors.slate.600/.48)_80%,theme(colors.teal.500)_86%,theme(colors.cyan.300)_90%,theme(colors.teal.500)_94%,theme(colors.slate.600/.48))_border-box] rounded-2xl border border-transparent animate-border">
         <div className="relative text-center z-10 px-8 py-12 rounded-2xl w-full bg-white dark:bg-black h-full mx-auto">
           {/* HEADER */}
@@ -278,5 +284,6 @@ const [loading, setLoading] = useState<boolean>(false)
         </div>
       </div>
     </div>
+   </ProtectedRoute>
   );
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import CreateCourseForm from "@/app/create-courses/page";
 import { useAuth } from "@/hooks/AuthProvider";
 import { User } from "lucide-react";
 import Image from "next/image";
@@ -10,7 +9,7 @@ import Swal from "sweetalert2";
 
 const NavProfile = () => {
   const router = useRouter();
-  const { user, logout, userRole } = useAuth();
+  const { user, logout } = useAuth();
   const handleLogOut = () => {
     Swal.fire({
       title: "Are you sure?",
