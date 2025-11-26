@@ -1,5 +1,6 @@
 "use client";
 
+import CreateCourseForm from "@/app/create-courses/page";
 import { useAuth } from "@/hooks/AuthProvider";
 import { User } from "lucide-react";
 import Image from "next/image";
@@ -9,7 +10,7 @@ import Swal from "sweetalert2";
 
 const NavProfile = () => {
   const router = useRouter();
-  const { user, logout } = useAuth();
+  const { user, logout, userRole } = useAuth();
   const handleLogOut = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -64,19 +65,22 @@ const NavProfile = () => {
         )}
       </div>
       <div className="mt-3 flex flex-col gap-2">
-        <Link
-          href="/profile"
-          className="hover:text-white px-2 py-1 rounded-md"
-        >
+        <Link href="/profile" className="hover:text-white px-2 py-1 rounded-md">
           Profile
         </Link>
-         <Link
+        <Link
           href="/became-teacher"
           className="hover:text-white px-2 py-1 rounded-md"
         >
-         Became Teacher
+          Became Teacher
         </Link>
-          
+        <Link
+          href="/create-courses"
+          className="hover:text-white px-2 py-1 rounded-md"
+        >
+          Create Courses
+        </Link>
+
         <button
           onClick={handleLogOut}
           className="text-left hover:text-white px-2 py-1 rounded-md"
