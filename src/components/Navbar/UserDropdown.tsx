@@ -2,7 +2,6 @@
 
  
 import { useEffect, useRef } from "react";
- 
 import NavProfile from "../Profile/NavProfile";
 
 // ----------------- User Dropdown -----------------
@@ -16,7 +15,6 @@ interface UserDropdownProps {
 }
 
 const UserDropdown: React.FC<UserDropdownProps> = ({ isOpen, onClose, onMouseEnter, onMouseLeave, onFocus, onBlur }) => {
-    
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -31,7 +29,6 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ isOpen, onClose, onMouseEnt
 
   if (!isOpen) return null;
 
- 
 
   return (
     <div

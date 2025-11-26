@@ -1,16 +1,25 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
-import React, { useState,  useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import Link from "next/link";
- 
+
 import { motion, Variants, Transition } from "framer-motion";
-import { Home, User, GraduationCap, LayoutDashboardIcon, Mail, Menu, X } from "lucide-react";
-import { usePathname  } from "next/navigation";
+import {
+  Home,
+  User,
+  GraduationCap,
+  Mail,
+  Menu,
+  X,
+} from "lucide-react";
+import { usePathname } from "next/navigation";
 import ShimmerButton from "../Button/ShimmerButton";
 import ThemeToggle from "../ThemeToggle";
 import { useAuth } from "@/hooks/AuthProvider";
 import ShimmerAvatarButton from "./ShimmerAvatarButton";
 import UserDropdown from "./UserDropdown";
- 
+// import logo from './favicon.png'
+
 import NavProfile from "../Profile/NavProfile";
 
 // ----------------- Types -----------------
@@ -21,7 +30,6 @@ interface MenuItem {
   gradient: string;
   iconColor: string;
 }
- 
 
 // ----------------- Menu Items -----------------
 const menuItems: MenuItem[] = [
@@ -29,35 +37,32 @@ const menuItems: MenuItem[] = [
     icon: <Home className="h-5 w-5" />,
     label: "Home",
     href: "/",
-    gradient: "radial-gradient(circle, rgba(59,130,246,0.15) 0%, rgba(37,99,235,0.06) 50%, rgba(29,78,216,0) 100%)",
+    gradient:
+      "radial-gradient(circle, rgba(59,130,246,0.15) 0%, rgba(37,99,235,0.06) 50%, rgba(29,78,216,0) 100%)",
     iconColor: "group-hover:text-blue-500 dark:group-hover:text-blue-400",
   },
   {
     icon: <GraduationCap className="h-5 w-5" />,
     label: "Courses",
     href: "/courses",
-    gradient: "radial-gradient(circle, rgba(249,115,22,0.15) 0%, rgba(234,88,12,0.06) 50%, rgba(194,65,12,0) 100%)",
+    gradient:
+      "radial-gradient(circle, rgba(249,115,22,0.15) 0%, rgba(234,88,12,0.06) 50%, rgba(194,65,12,0) 100%)",
     iconColor: "group-hover:text-orange-500 dark:group-hover:text-orange-400",
-  },
-  {
-    icon: <LayoutDashboardIcon className="h-5 w-5" />,
-    label: "Categories",
-    href: "/categories",
-    gradient: "radial-gradient(circle, rgba(34,197,94,0.15) 0%, rgba(22,163,74,0.06) 50%, rgba(21,128,61,0) 100%)",
-    iconColor: "group-hover:text-green-500 dark:group-hover:text-green-400",
   },
   {
     icon: <User className="h-5 w-5" />,
     label: "About",
     href: "/about",
-    gradient: "radial-gradient(circle, rgba(239,68,68,0.15) 0%, rgba(220,38,38,0.06) 50%, rgba(185,28,28,0) 100%)",
+    gradient:
+      "radial-gradient(circle, rgba(239,68,68,0.15) 0%, rgba(220,38,38,0.06) 50%, rgba(185,28,28,0) 100%)",
     iconColor: "group-hover:text-red-500 dark:group-hover:text-red-400",
   },
   {
     icon: <Mail className="h-5 w-5" />,
     label: "Contact",
     href: "/contact",
-    gradient: "radial-gradient(circle, rgba(239,68,68,0.15) 0%, rgba(220,38,38,0.06) 50%, rgba(185,28,28,0) 100%)",
+    gradient:
+      "radial-gradient(circle, rgba(239,68,68,0.15) 0%, rgba(220,38,38,0.06) 50%, rgba(185,28,28,0) 100%)",
     iconColor: "group-hover:text-red-500 dark:group-hover:text-red-400",
   },
 ];
@@ -88,11 +93,10 @@ const sharedTransition: Transition = {
 // ----------------- Navbar Component -----------------
 export default function ClientNavbar(): React.JSX.Element {
   const pathname = usePathname();
-  const { user }  = useAuth();
+  const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const closeTimeoutRef = useRef<number | NodeJS.Timeout | null>(null);
- 
 
   const toggleUserDropdown = useCallback(() => {
     setIsUserDropdownOpen((prev) => !prev);
@@ -116,7 +120,10 @@ export default function ClientNavbar(): React.JSX.Element {
 
   const closeUserDropdownDelayed = useCallback(() => {
     if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
-    closeTimeoutRef.current = window.setTimeout(() => setIsUserDropdownOpen(false), 180);
+    closeTimeoutRef.current = window.setTimeout(
+      () => setIsUserDropdownOpen(false),
+      180
+    );
   }, []);
   // ----------------- Render Menu Items -----------------
   const renderMenuItem = (item: MenuItem) => {
@@ -145,7 +152,9 @@ export default function ClientNavbar(): React.JSX.Element {
               variants={itemVariants}
               transition={sharedTransition}
             >
-              <span className={`transition-colors ${item.iconColor}`}>{item.icon}</span>
+              <span className={`transition-colors ${item.iconColor}`}>
+                {item.icon}
+              </span>
               <span>{item.label}</span>
             </motion.div>
           </Link>
@@ -157,7 +166,9 @@ export default function ClientNavbar(): React.JSX.Element {
               transition={sharedTransition}
               style={{ transform: "rotateX(90deg)" }}
             >
-              <span className={`transition-colors ${item.iconColor}`}>{item.icon}</span>
+              <span className={`transition-colors ${item.iconColor}`}>
+                {item.icon}
+              </span>
               <span>{item.label}</span>
             </motion.div>
           </Link>
@@ -165,14 +176,20 @@ export default function ClientNavbar(): React.JSX.Element {
       </motion.li>
     );
   };
-  
 
   return (
     <div className="sticky top-0 z-50 my-3">
       <motion.nav className="p-3 rounded-2xl w-11/12 mx-auto bg-white/60 dark:bg-black/60 backdrop-blur-lg border border-gray-200/80 dark:border-gray-800/80 shadow-lg relative">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <div className="font-bold text-xl">Logo</div>
+          <div className="font-bold text-xl flex justify-center items-center gap-2">
+            <figure className=" h-10 w-auto">
+              <img src="/favicon.png" alt="" className=" h-full w-auto" />
+            </figure>
+            <h1 className=" ">
+              Skill <span className="text-transparent bg-clip-text bg-linear-to-r from-cyan-500 to-cyan-600 dark:from-cyan-400 dark:to-cyan-500">Zen</span>
+            </h1>
+          </div>
 
           {/* Desktop Menu */}
           <ul className="hidden md:flex items-center gap-2 relative z-10">
@@ -236,9 +253,9 @@ export default function ClientNavbar(): React.JSX.Element {
             {menuItems.map(renderMenuItem)}
             <div className="flex flex-col gap-3 mt-2">
               {user ? (
-                 <div className="px-4 py-3">
-                       <NavProfile/>
-                     </div>
+                <div className="px-4 py-3">
+                  <NavProfile />
+                </div>
               ) : (
                 <>
                   <ShimmerButton text="Log In" />

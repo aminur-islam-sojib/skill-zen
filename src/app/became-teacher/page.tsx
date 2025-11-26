@@ -1,5 +1,5 @@
 "use client";
- 
+
 import { useAuth } from "@/hooks/AuthProvider";
 import { useAxiosSecure } from "@/lib/useAxiosSecure";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -15,67 +15,53 @@ type Inputs = {
   bio: string;
 };
 
+import ProtectedRoute from '@/components/ProtectedRoute';
+
 export default function TeacherFormCard() {
-  const { handleSubmit, register, reset } = useForm<Inputs>();
-const instanceSecure = useAxiosSecure()
-  const {user}= useAuth()
+  const { handleSubmit, register } = useForm<Inputs>();
+  const instanceSecure = useAxiosSecure();
+  const { user } = useAuth();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log("SUBMITTED DATA:", data);
+  
 
     // Access uploaded file (optional)
     const file = data.file?.[0];
     if (file) {
       console.log("Uploaded File:", file);
     }
- 
-    const name = data.name
-    const email = data.email
-    const experience = data.experience 
-    const bio = data.bio
-    const phoneNumber = data.phoneNumber
-    const category = data.options 
 
-    const userInfo = {name, email, experience , bio, phoneNumber, category}
+    const name = data.name;
+    const email = data.email;
+    const experience = data.experience;
+    const bio = data.bio;
+    const phoneNumber = data.phoneNumber;
+    const category = data.options;
 
-  try {
-   const res = await instanceSecure.post("/became-teacher", userInfo)
-  console.log(res.data.data.insertedId)
+    const userInfo = { name, email, experience, bio, phoneNumber, category };
 
-  if (res.data.data.insertedId) {
-    toast("Teacher Added Successfully")
-  }
- 
+    try {
+      const res = await instanceSecure.post("/became-teacher", userInfo);
 
-  } catch (error) {
-    console.log(error)
-  }
+      console.log("RESPONSE DATA", res.data.role);
 
- reset()
+      if (res.data.role == "teacher") {
+        toast.info("You are already a teacher");
+      } else {
+        toast.success("Teacher Added Successfully");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    //  reset()
   };
 
   return (
-    <>
-      <style jsx>{`
-        @property --border-angle {
-          syntax: "<angle>";
-          inherits: true;
-          initial-value: 0deg;
-        }
-        @keyframes border-spin {
-          100% {
-            --border-angle: 360deg;
-          }
-        }
-        .animate-border {
-          animation: border-spin 6s linear infinite;
-        }
-      `}</style>
-
+    <ProtectedRoute>
       <div className="w-11/12 mx-auto flex items-center justify-center p-4">
         <div className="w-full mx-auto [background:linear-gradient(45deg,#080b11,theme(colors.slate.800)_50%,#172033)_padding-box,conic-gradient(from_var(--border-angle),theme(colors.slate.600/.48)_80%,theme(colors.teal.500)_86%,theme(colors.cyan.300)_90%,theme(colors.teal.500)_94%,theme(colors.slate.600/.48))_border-box] rounded-2xl border border-transparent animate-border">
           <div className="relative text-center z-10 px-8 py-12 rounded-2xl w-full bg-white dark:bg-black h-full mx-auto">
-
             {/* Header */}
             <h1 className="text-2xl font-bold tracking-tight text-black dark:text-white">
               Become a Teacher
@@ -86,15 +72,11 @@ const instanceSecure = useAxiosSecure()
 
             {/* FORM START */}
             <form
-             
-         
               onSubmit={handleSubmit(onSubmit)}
               className="mt-8 flex flex-col gap-6 text-left"
-           
             >
               {/* GRID WRAPPER */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
                 {/* Full Name */}
                 <div>
                   <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">
@@ -117,7 +99,8 @@ const instanceSecure = useAxiosSecure()
                     type="email"
                     className="w-full px-4 py-2 rounded-lg bg-gray-100 dark:bg-slate-800 border dark:border-slate-700 focus:ring-2 focus:ring-cyan-400"
                     defaultValue={user?.email || ""}
-                    {...register("email", { required: true })}
+                    readOnly
+                    {...register("email", { required: true } )}
                   />
                 </div>
 
@@ -176,7 +159,6 @@ const instanceSecure = useAxiosSecure()
                     {...register("file")}
                   />
                 </div>
-
               </div>
 
               {/* Bio */}
@@ -203,6 +185,6 @@ const instanceSecure = useAxiosSecure()
           </div>
         </div>
       </div>
-    </>
+    </ProtectedRoute>
   );
 }

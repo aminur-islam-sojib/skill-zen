@@ -120,3 +120,18 @@
     @apply bg-background text-foreground transition-colors duration-300;
   }
 }
+
+/* Added: global keyframes & custom property for border spinning animation used by became-teacher page */
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+@keyframes border-spin {
+  100% {
+    --border-angle: 360deg;
+  }
+}
+.animate-border {
+  animation: border-spin 6s linear infinite;
+}

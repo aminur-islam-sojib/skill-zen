@@ -3,6 +3,7 @@ import { useAuth } from "@/hooks/AuthProvider";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
+import { toast } from "sonner";
 
 const ArrowBoxIcon: React.FC = () => (
   <svg
@@ -124,16 +125,19 @@ const Login2: React.FC = () => {
     try {
       setIsLoading(true);
       setErrorMsg(null);
-      const res = await googleLogin()
+      const res = await googleLogin();
       if (res.error) {
-        setErrorMsg(res.error)
-        console.error('Google login error:', res.error)
+        setErrorMsg(res.error);
+        console.error("Google login error:", res.error);
+        toast.error(` Something Wrong, Err: ${res.error}`);
       } else {
-        if (process.env.NODE_ENV === 'development') console.debug('Google login success', res.user)
-        router.push('/')
+        if (process.env.NODE_ENV === "development")
+          console.debug("Google login success", res.user);
+        router.push("/");
+        toast.success("User Logged In Successfully");
       }
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') console.debug(error);
+      if (process.env.NODE_ENV === "development") console.debug(error);
     } finally {
       setIsLoading(false);
     }
@@ -154,18 +158,21 @@ const Login2: React.FC = () => {
       setErrorMsg("Please provide both email and password");
       return;
     }
-    if (process.env.NODE_ENV === 'development') console.debug("email:", email, "hasPassword:", !!pass);
+    if (process.env.NODE_ENV === "development")
+      console.debug("email:", email, "hasPassword:", !!pass);
 
     setIsLoading(true);
     try {
       const res = await login(email, pass);
-      if (process.env.NODE_ENV === 'development') console.debug("login response", res);
-
+      if (process.env.NODE_ENV === "development")
+        console.debug("login response", res);
+      toast.success("User Logged In successfully");
       if (res.error) {
         setErrorMsg(res.error);
         console.error("Auth error:", res.error);
       } else {
-        if (process.env.NODE_ENV === 'development') console.debug("Logged in user:", res.user);
+        if (process.env.NODE_ENV === "development")
+          console.debug("Logged in user:", res.user);
         // TODO: Redirect / update UI (use router or next/navigation)
         // redirect to homepage after successful login
         router.push("/");
@@ -179,7 +186,7 @@ const Login2: React.FC = () => {
   };
 
   useEffect(() => {
-    if (user) router.push('/');
+    if (user) router.push("/");
   }, [user, router]);
 
   return (

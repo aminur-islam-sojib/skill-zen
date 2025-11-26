@@ -51,7 +51,7 @@ const NavProfile = () => {
               className="w-full h-full object-cover"
             />
           ) : (
-            <User className="h-6 w-6 text-white" />
+            <User className="h-10 w-10 text-white" />
           )}
         </div>
         {user && (
@@ -64,19 +64,22 @@ const NavProfile = () => {
         )}
       </div>
       <div className="mt-3 flex flex-col gap-2">
-        <Link
-          href="/profile"
-          className="hover:text-white px-2 py-1 rounded-md"
-        >
+        <Link href="/profile" className="hover:text-white px-2 py-1 rounded-md">
           Profile
         </Link>
-         <Link
+        <Link
           href="/became-teacher"
           className="hover:text-white px-2 py-1 rounded-md"
         >
-         Became Teacher
+          Became Teacher
         </Link>
-          
+        <Link
+          href="/create-courses"
+          className="hover:text-white px-2 py-1 rounded-md"
+        >
+          Create Courses
+        </Link>
+
         <button
           onClick={handleLogOut}
           className="text-left hover:text-white px-2 py-1 rounded-md"

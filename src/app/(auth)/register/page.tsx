@@ -6,7 +6,9 @@ import { useRouter } from 'next/navigation';
 import { FcGoogle } from 'react-icons/fc';
 import { FaFileAlt, FaRegUser } from 'react-icons/fa';
 import { updateProfile } from 'firebase/auth';
+import { useLoader } from '@/hooks/LoaderContext';
 import { useAxiosSecure } from '@/lib/useAxiosSecure';
+import { toast } from 'sonner';
 // Use regular <img> for local blob previews to avoid next/image width/height requirement
 
 // --- Icons ---
@@ -55,6 +57,7 @@ const Login2: React.FC = () => {
   const router = useRouter();
   const { googleLogin, signup, user } = useAuth();
   const instanceSecure = useAxiosSecure();
+  const { show, hide } = useLoader();
 
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -83,6 +86,7 @@ const Login2: React.FC = () => {
         return null;
       }
       setUploadingImage(true);
+      show();
       const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
         method: "POST",
         body: formData,
@@ -106,6 +110,7 @@ const Login2: React.FC = () => {
       return null;
     } finally {
       setUploadingImage(false);
+      hide();
     }
   };
 
@@ -120,7 +125,9 @@ const Login2: React.FC = () => {
         console.error('Google login error:', res.error);
       } else {
         if (process.env.NODE_ENV === 'development') console.debug('Google login success', res.user);
+        toast.success("User Registration Successful")
         router.push('/');
+
       }
     } catch (error) {
       if (process.env.NODE_ENV === 'development') console.debug(error);
@@ -183,6 +190,7 @@ const Login2: React.FC = () => {
         console.error('Auth error:', res.error);
       } else if (res.user) {
         // --- Update Firebase profile ---
+        toast.success("User Registration Successful")
         try {
           await updateProfile(res.user, { displayName: name, photoURL: profileImageUrl || undefined });
         } catch (err) {
